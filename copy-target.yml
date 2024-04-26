@@ -1,7 +1,10 @@
 # creator-docs_jaにおける原文の更新を取り込むためのリポジトリ
 # こちらの記事の手法を使わせて頂いている: https://zenn.dev/smikitky/articles/0d250f7367eda9
-# おおむね記事の通りに更新作業を行うが、creator-docs_jaでは未翻訳のファイルがまだたくさんあるので、Originフォルダー内の全てを`git merge`すると、英文のままのMarkdownファイルまでマージされてしまう
-# そのためこのYamlファイル内に翻訳済みのファイルをパスとともに列挙し、powershellスクリプトを用いてOriginフォルダーから翻訳済みYamlファイルのみをコピーしてプッシュする
+
+# おおむね記事の通りに更新作業を行うが、creator-docs_jaでは未翻訳のファイルがまだたくさんあるので、Originフォルダー内の全てを
+#   `git merge`すると、英文のままのMarkdownファイルまでマージされてしまう。
+# そのため、このYamlファイル内に翻訳済みのファイルをパスとともに列挙し、powershellスクリプト(`main.ps1`)を用いて
+#   Originフォルダーから翻訳済みYamlファイルのみをコピーしてプッシュする
 creator-docs:
   Docs:
     docs:
@@ -27,7 +30,8 @@ UdonSharp:
       docs:
         - index
         # 以下の3つのフォルダ(Yamlキー)は公式U#リポジトリには存在しない
-        # しかしながら、creator-docs_jaはフォルダパスをそのままドキュメントの階層構造にしている(つまりdocusaurusのsidebar.jsを使っていない)ため、階層構造のためのフォルダを作成しないといけない
+        # しかしながら、creator-docs_jaはフォルダパスをそのままドキュメントの階層構造にしている(つまりdocusaurusのsidebar.jsを
+        #   使っていない)ため、階層構造のためのフォルダを作成しないといけない
         # 下の3つのYamlキーのみがmain.ps1によって特殊に処理される
         - Documentation:
           - UdonSharp

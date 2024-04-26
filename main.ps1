@@ -8,15 +8,18 @@ function PrettifyDestinationPath() {
 
     if ($destpath -like "Origin\creator-docs\*") {
         $destpath = $destpath -creplace 'Origin\\creator-docs\\Docs\\', ''
-    } elseif ($destpath -like "Origin\UdonSharp\*") {
+    }
+    elseif ($destpath -like "Origin\UdonSharp\*") {
         $destpath = $destpath -creplace 'Origin\\UdonSharp\\Tools\\Docusaurus\\', ''
-        $destpath = $destpath -creplace 'docs\\', 'docs\worlds\udonsharp\'
-    } elseif ($destpath -like "Origin\creator-companion\*") {
+        $destpath = $destpath -creplace 'docs', 'docs\worlds\udonsharp'
+    }
+    elseif ($destpath -like "Origin\creator-companion\*") {
         $destpath = $destpath -creplace 'Origin\\creator-companion\\Docs\\', ''
-        $destpath = $destpath -creplace 'docs', 'docs\vcc\'
-    } elseif ($destpath -like "Origin\ClientSim\*") {
+        $destpath = $destpath -creplace 'docs', 'docs\vcc'
+    }
+    elseif ($destpath -like "Origin\ClientSim\*") {
         $destpath = $destpath -creplace 'Origin\\ClientSim\\Tools\\Docusaurus\\', ''
-        $destpath = $destpath -creplace 'docs', 'docs\clientsim\'
+        $destpath = $destpath -creplace 'docs', 'docs\clientsim'
     }
 
     return $destpath
@@ -32,35 +35,44 @@ function CopyFiles() {
     foreach ($key in $data.Keys) {
         $value = $data[$key]
         $newPath = Join-Path -Path $path -ChildPath $key
-        if ($value -is [System.Collections.Generic.List[System.Object]]) {
+
+
+        if ($value -is [hashtable]) {
+            # 再帰的にディレクトリを探索
+            CopyFiles -path $newPath -data $value
+        }
+
+        elseif ($value -is [System.Collections.Generic.List[System.Object]]) {
+            # リスト内にはハッシュテーブルも含まれている可能性があるので、ファイル名文字列のみを抽出
             $stringvalue = $value | Where-Object { $_ -is [String]}
+
             foreach ($s in $stringvalue) {
-                # ファイルをコピー
                 $source = Join-Path -Path $newPath -ChildPath "$s.md"
+
+                # U#の特殊フォルダはsourceには無く、そのままだとNotFoundになるので、消去
                 $source = $source -replace 'Documentation\\|Extra\\|Getting-Started\\', ''
+
                 $destinationDir = PrettifyDestinationPath -destpath $newPath
                 $destination = Join-Path -Path $destinationDir -ChildPath "$s.md"
+
+                # ファイルを包むディレクトリが存在しない場合は作成
                 if (!(Test-Path $destinationDir)) {
                     Write-Host -NoNewline -ForegroundColor Green "MKDIR:   "
                     Write-Host $destinationDir
                     New-Item -ItemType Directory -Force -Path $destinationDir | Out-Null
                 }
-                $destination = Join-Path -Path $destinationDir -ChildPath "$s.md"
-                Copy-Item -Path $source -Destination $destination -Force
+
                 Write-Host -NoNewline -ForegroundColor Green "COPY:    "
                 Write-Host "source = $source,   destination = $destination"
-                Copy-Item -Path $source -Destination $destination -Force
+                # Copy-Item -Path $source -Destination $destination -Force
             }
 
             foreach ($v in $value) {
                 if ($v -is [hashtable]) {
+                    # 再帰的にディレクトリを探索
                     CopyFiles -path $newPath -data $v
                 }
             }
-
-        } elseif ($value -is [hashtable]) {
-            # 再帰的にディレクトリを探索
-            CopyFiles -path $newPath -data $value
         }
     }
 }
@@ -75,21 +87,21 @@ $staticSourceDest = @(
 )
 
 # Gitのローカルリポジトリを最新に更新
-# Write-Host -ForegroundColor Green "Update local Git repositories"
-# Set-Location $PSScriptRoot\Origin\creator-docs
-# git fetch origin main
-# git reset --hard origin/main
-# Set-Location $PSScriptRoot\Origin\UdonSharp
-# git fetch origin master
-# git reset --hard origin/master
-# Set-Location $PSScriptRoot\Origin\creator-companion
-# git fetch origin main
-# git reset --hard origin/main
-# Set-Location $PSScriptRoot\Origin\ClientSim
-# git fetch origin main
-# git reset --hard origin/main
-# Set-Location $PSScriptRoot
-# Write-Host "`n`n"
+Write-Host -ForegroundColor Green "Update local Git repositories"
+Set-Location $PSScriptRoot\Origin\creator-docs
+git fetch origin main
+git reset --hard origin/main
+Set-Location $PSScriptRoot\Origin\UdonSharp
+git fetch origin master
+git reset --hard origin/master
+Set-Location $PSScriptRoot\Origin\creator-companion
+git fetch origin main
+git reset --hard origin/main
+Set-Location $PSScriptRoot\Origin\ClientSim
+git fetch origin main
+git reset --hard origin/main
+Set-Location $PSScriptRoot
+Write-Host "`n`n"
 
 # 静的ファイルをコピー
 write-Host -ForegroundColor Green "Copy static files"
