@@ -1,0 +1,24 @@
+{
+    "Getting-Started": [
+        "setup",
+        "examples",
+        "community-resources",
+        "configuration",
+        "migration",
+        "frequently-asked-questions"
+    ],
+    "Documentation": [
+        "udonsharp",
+        "vrchat-api",
+        "events",
+        "editor-scripting"
+    ],
+    "Extra": [
+        "random-tips-&-performance-pointers",
+        "runtime-exception-debugging",
+        "class-exposure-tree",
+        "networking-tips-&-tricks",
+        "using-vrc-stations",
+        "exporting-to-assembly-files"
+    ]
+}
