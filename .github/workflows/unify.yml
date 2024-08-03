@@ -1,0 +1,30 @@
+name: Unify Repositories
+
+on:
+    workflow_dispatch:
+    schedule:
+      - cron: '0 0 * * 1'
+
+jobs:
+  unify:
+    runs-on: windows-2019
+
+    steps:
+    - name: Check out main branch
+      uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Copy script to workspace
+      run: |
+        mkdir -p scripts
+        cp ./unify.ps1 ./scripts/unify.ps1
+
+    - name: Check out sync branch
+      uses: actions/checkout@v3
+      with:
+        ref: sync
+
+    - name: Run unify.ps1
+      run: pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
+      shell: pwsh
