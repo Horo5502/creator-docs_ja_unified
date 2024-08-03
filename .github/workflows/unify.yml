@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Check out main branch
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: main
 
@@ -21,12 +21,14 @@ jobs:
         cp ./unify.ps1 ./scripts/unify.ps1
 
     - name: Check out sync branch
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: sync
 
     - name: Run unify.ps1
-      run: pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
+      run: |
+        ls -a
+        pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
       shell: pwsh
     
     - name: Commit and push changes
