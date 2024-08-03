@@ -28,3 +28,12 @@ jobs:
     - name: Run unify.ps1
       run: pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
       shell: pwsh
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "actions@github.com"
+        git add .
+        git commit -m "UPDATE: sync upstream"
+        git push origin sync
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
