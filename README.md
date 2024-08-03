@@ -1,5 +1,9 @@
 (The English translation is below)
 
+> [!WARNING]  
+> このリポジトリのsyncブランチに含まれているファイルは **全て** VRChat公式が有するものであり、このリポジトリの管理者が作成したものでは**ありません**。  
+> **All** files contained in the sync branch of this repository are owned by official VRChat and were **NOT** created by the administrators of this repository.
+
 # creator-docs_ja_unified
 VRChat CreatorDocs統合リポジトリ  
 管理者によって同期作業が行われた時点での、全てのVRChatクリエイタードキュメントが含まれています!
