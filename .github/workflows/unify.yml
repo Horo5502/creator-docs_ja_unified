@@ -27,7 +27,7 @@ jobs:
 
     - name: Run unify.ps1
       run: |
-        ls -a
+        ls
         pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
       shell: pwsh
     
