@@ -18,7 +18,7 @@ jobs:
     - name: Copy script to workspace
       run: |
         mkdir -p scripts
-        cp ./unify.ps1 ./scripts/unify.ps1
+        cp ./unify.ps1 /tmp/unify.ps1
 
     - name: Check out sync branch
       uses: actions/checkout@v4
@@ -27,8 +27,8 @@ jobs:
 
     - name: Run unify.ps1
       run: |
-        ls
-        pwsh -ExecutionPolicy Bypass ./scripts/unify.ps1
+        ls -a
+        pwsh -ExecutionPolicy Bypass /tmp/unify.ps1
       shell: pwsh
     
     - name: Commit and push changes
