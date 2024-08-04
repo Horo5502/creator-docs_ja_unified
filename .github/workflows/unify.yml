@@ -15,10 +15,11 @@ jobs:
       with:
         ref: main
 
-    - name: Copy script to workspace
+    - name: Copy script to /tmp/
       run: |
         mkdir -p /tmp
         cp ./unify.ps1 /tmp/unify.ps1
+        cp ./usharp_category.json /tmp/usharp_category.json
 
     - name: Check out sync branch
       uses: actions/checkout@v4
@@ -27,12 +28,13 @@ jobs:
 
     - name: Run unify.ps1
       run: |
-        pwsh -ExecutionPolicy Bypass /tmp/unify.ps1
+        pwsh -ExecutionPolicy Bypass /tmp/unify.ps1 -workingDirPath /a/creator-docs_ja_unified/creator-docs_ja_unified/ -categoryJsonPath /tmp/usharp_category.json
       shell: pwsh
     
     - name: Commit and push changes
       run: |
         git config --local user.email "actions@github.com"
+        git config --local user.name "github-actions"
         git add .
         git commit -m "UPDATE: sync upstream"
         git push origin sync

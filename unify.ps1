@@ -1,3 +1,9 @@
+param (
+    # creator-docs_ja_unifiedローカルリポジトリのルートディレクトリのパス(Github Actionsのために追加)
+    [string]$workingDirPath = $PSScriptRoot,
+    [string]$categoryJsonPath = "$PSScriptRoot\usharp_category.json"
+)
+
 # 与えられたパスを構成するディレクトリが存在しない場合に作成
 function MakeDirectoryIfNotExists {
     param (
@@ -37,7 +43,7 @@ $repositoryInfo = @(
 # Gitのローカルリポジトリを最新に更新
 Write-Host -ForegroundColor Green "Update local Git repositories"
 
-$repoParentDir = "$PSScriptRoot\Origin"
+$repoParentDir = "$workingDirPath\Origin"
 
 # 初回実行時にはリポジトリをクローン
 if (!(Test-Path $repoParentDir)) {
@@ -66,12 +72,12 @@ else {
     }
 }
 
-Set-Location $PSScriptRoot
+Set-Location $workingDirPath
 Write-Host "`n`n"
 
 # docs,staticフォルダをクリア
-Remove-Item -Path "$PSScriptRoot\docs_all\" -Recurse -Force
-Remove-Item -Path "$PSScriptRoot\static\" -Recurse -Force
+Remove-Item -Path "$workingDirPath\docs_all\" -Recurse -Force
+Remove-Item -Path "$workingDirPath\static\" -Recurse -Force
 
 # 静的ファイルをコピー
 write-Host -ForegroundColor Green "Copy static files"
@@ -93,18 +99,17 @@ foreach ($sourcedest in $markdownSourceDest) {
     Copy-Item -Path $($sourcedest["Source"]) -Destination $($sourcedest["Destination"]) -Recurse -Force
 }
 # UdonSharpだけはカテゴリ分けが必要なので別個で処理
-$jsonPath = "$PSScriptRoot\usharp_category.json"
-$jsonContent = Get-Content -Path $jsonPath -Raw | ConvertFrom-Json
-foreach ($file in Get-ChildItem -Path "$PSScriptRoot\Origin\UdonSharp\Tools\Docusaurus\docs" -File) {
+$jsonContent = Get-Content -Path $categoryJsonPath -Raw | ConvertFrom-Json
+foreach ($file in Get-ChildItem -Path "$workingDirPath\Origin\UdonSharp\Tools\Docusaurus\docs" -File) {
     $mdcategory = ""
     $fileName = $file.Name -replace ".md", ""
 
     if ($fileName -eq "index") {
         Write-Host -NoNewline -ForegroundColor Green "COPY:    "
-        Write-Host "source = $($file.FullName),   destination = $PSScriptRoot\docs_all\worlds\udonsharp\index.md"
+        Write-Host "source = $($file.FullName),   destination = $workingDirPath\docs_all\worlds\udonsharp\index.md"
 
-        MakeDirectoryIfNotExists -dirpath "$PSScriptRoot\docs_all\worlds\udonsharp"
-        Copy-Item -Path $file.FullName -Destination "$PSScriptRoot\docs_all\worlds\udonsharp\index.md"
+        MakeDirectoryIfNotExists -dirpath "$workingDirPath\docs_all\worlds\udonsharp"
+        Copy-Item -Path $file.FullName -Destination "$workingDirPath\docs_all\worlds\udonsharp\index.md"
         continue
     }
     foreach ($category in $jsonContent.PSObject.Properties) {
@@ -113,19 +118,19 @@ foreach ($file in Get-ChildItem -Path "$PSScriptRoot\Origin\UdonSharp\Tools\Docu
             break
         }
     }
-    $destPath = "$PSScriptRoot\docs_all\worlds\udonsharp\$mdcategory\$fileName.md"
+    $destPath = "$workingDirPath\docs_all\worlds\udonsharp\$mdcategory\$fileName.md"
 
     if (!($mdcategory -eq "")) {
         Write-Host -NoNewline -ForegroundColor Green "COPY:    "
         Write-Host "source = $($file.FullName),   destination = $destPath"
 
-        MakeDirectoryIfNotExists -dirpath "$PSScriptRoot\docs_all\worlds\udonsharp\$mdcategory"
+        MakeDirectoryIfNotExists -dirpath "$workingDirPath\docs_all\worlds\udonsharp\$mdcategory"
         Copy-Item -Path $file.FullName -Destination $destPath
     }
 }
 
 # いらないものを削除
 Write-Host -NoNewline -ForegroundColor Green "DELETE:    "
-Write-Host "$PSScriptRoot\docs_all\clientsim\logo.png"
+Write-Host "$workingDirPath\docs_all\clientsim\logo.png"
 
-Remove-Item -Path "$PSScriptRoot\docs_all\clientsim\logo.png"
+Remove-Item -Path "$workingDirPath\docs_all\clientsim\logo.png"
