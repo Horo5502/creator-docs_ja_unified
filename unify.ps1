@@ -134,3 +134,12 @@ Write-Host -NoNewline -ForegroundColor Green "DELETE:    "
 Write-Host "$workingDirPath\docs_all\clientsim\logo.png"
 
 Remove-Item -Path "$workingDirPath\docs_all\clientsim\logo.png"
+
+# OriginフォルダがGitの追跡対象にならないように、.gitignoreを作成
+if (!(Test-Path "$workingDirPath\.gitignore")) {
+    Write-Host -NoNewline -ForegroundColor Green "MKFILE:   "
+    Write-Host "$workingDirPath\.gitignore"
+
+    New-Item -ItemType File -Force -Path "$workingDirPath\.gitignore" | Out-Null
+    Add-Content -Path "$workingDirPath\.gitignore" -Value ".gitignore`nOrigin`nunify.ps1`nusharp_category.json"
+}
