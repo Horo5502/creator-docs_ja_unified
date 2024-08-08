@@ -30,11 +30,9 @@ https://horo5502.github.io/creator-docs_ja/how-to-contribute/
 
 - __私はこのリポジトリの内容について責任を負いません。__
 
-- 現在、このリポジトリは手動で更新されているため、管理者がこのリポジトリの管理を辞めると、ファイルが同期されなくなってしまう可能性があります。
-
 - 同期作業のタイムラグや、手違いにより、原文ファイルの抜け漏れがあるかもしれません。
 
-いつか Github Action を実装して自動同期できるようにしたいと考えていますが、いつできるかはわかりません。(誰かやってくれないかなぁ)
+このリポジトリは、Github Actionsによって、毎週月曜日の午前0時に公式リポジトリとの同期が行われます。
 
 ---
 ---
@@ -66,9 +64,6 @@ If you are considering running a site to translate VRChat Creator Docs into anot
 
 - __I am NOT responsible for the contents of this repository.__
 
-- Currently, this repository is updated manually, so if the administrator stops managing it, the files may no longer be synchronized.
-
-- There may be a time lag in synchronization or omissions of original files due to mistakes.
 - Due to time lags in the synchronization process or human errors, source files may be missing.
 
-I hope to implement GitHub Actions for automatic synchronization someday, but I don't know when that will be.
+This repository will be synced with the official repository every Monday at 0pm via Github Actions.
