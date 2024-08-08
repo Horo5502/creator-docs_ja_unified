@@ -6,21 +6,22 @@
 
 # creator-docs_ja_unified
 VRChat CreatorDocs統合リポジトリ  
-管理者によって同期作業が行われた時点での、全てのVRChatクリエイタードキュメントが含まれています!
+Github Actionsによって同期作業が行われた時点での、全てのVRChatクリエイタードキュメントが含まれています!
+同期作業は、毎週月曜日の午前0時に自動で行われます。
 
 ## 概要
 creator-docs_jaにおける原文の更新を取り込むためのリポジトリ。  
-原文追従には、こちらの記事の手法を使わせて頂いている: https://zenn.dev/smikitky/articles/0d250f7367eda9
+原文追従の手順は、こちらの記事の手法を使わせて頂いています: https://zenn.dev/smikitky/articles/0d250f7367eda9
 
 <!-- おおむね記事の通りに更新作業を行うが、creator-docs_jaでは未翻訳のファイルがまだたくさんあるので、Originフォルダー内の全てをcreator-docs_jaに`git merge`すると、英文のままのMarkdownファイルまでマージされてしまう。   -->
 <!-- そのため`copy-target.yml`内に翻訳済みのファイルをパスとともに列挙し、powershellスクリプト(`main.ps1`)を用いてOriginフォルダーから翻訳済みYamlファイルのみをコピーしてプッシュする。 -->
 
-VRChatのクリエイタードキュメントは、4つのリポジトリに分かれている。  
-そのままでは更新の取り込みがやりづらいので、このリポジトリに全てのドキュメントを統合し、これをcreator-docs_jaから`git pull`することで、更新を行っている。  
-また、creator-docs_jaでは、デプロイの際に、翻訳済のファイルのみを選択してデプロイすることで、未翻訳の英文ファイルがユーザーに表示されないようにしている。
+VRChatのクリエイタードキュメントは、4つのリポジトリに分かれています。  
+そのままでは更新の取り込みがやりづらいので、このリポジトリに全てのドキュメントを統合し、これをcreator-docs_jaから`git pull`することで、更新を行っています。  
+また、creator-docs_jaでは、デプロイの際に、翻訳済のファイルのみを選択してデプロイすることで、未翻訳の英文ファイルがサイトに表示されないようにしています。
 
-`sync`ブランチが実際の統合済みファイル群である。  
-このブランチは、creator-docs_jaの上流ブランチの役割を果たしている。
+`sync`ブランチが実際の統合済みファイル群です。  
+このブランチは、creator-docs_jaの上流ブランチの役割を果たしています。
 
 詳しくはこちら  
 https://horo5502.github.io/creator-docs_ja/how-to-contribute/
@@ -39,7 +40,8 @@ https://horo5502.github.io/creator-docs_ja/how-to-contribute/
 
 # creator-docs_ja_unified
 VRChat CreatorDocs Unified Repository.  
-This repository contains all VRChat creator documents as of the time the synchronization was performed by the administrator!
+This repository contains all VRChat creator documents as of the time the synchronization was performed by Github Actions!
+Synchronization occurs automatically every Monday at 0pm.
 
 ## Overview
 A repository to incorporate updates from the original text in creator-docs_ja.  
@@ -50,7 +52,7 @@ It uses the method described in this article to follow the original text updates
 
 VRChat creator documents are divided into four repositories.
 But since it is difficult to incorporate updates directly, we integrate all the documents into this repository and update them by running `git pull` from creator-docs_ja.  
-Also, in creator-docs_ja, we select and deploy only the translated files during deployment to prevent untranslated English files from being displayed to users.
+Also, creator-docs_ja selects and deploys only translated files during deployment to prevent untranslated English files from appearing on the site.
 
 The sync branch contains the actual integrated files.
 This branch serves as the upstream branch for creator-docs_ja.
