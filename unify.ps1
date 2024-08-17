@@ -98,7 +98,14 @@ foreach ($sourcedest in $markdownSourceDest) {
     MakeDirectoryIfNotExists -dirpath $($sourcedest["Destination"])
     Copy-Item -Path $($sourcedest["Source"]) -Destination $($sourcedest["Destination"]) -Recurse -Force
 }
+
+
 # UdonSharpだけはカテゴリ分けが必要なので別個で処理
+$legacyDocsDir = "$workingDirPath\docs_all\worlds\udon\udonsharp\legacy-docs"
+Write-Host -NoNewline -ForegroundColor Green "MKDIR:   "
+Write-Host $legacyDocsDir
+New-Item -ItemType Directory -Force -Path $legacyDocsDir | Out-Null
+
 $jsonContent = Get-Content -Path $categoryJsonPath -Raw | ConvertFrom-Json
 foreach ($file in Get-ChildItem -Path "$workingDirPath\Origin\UdonSharp\Tools\Docusaurus\docs" -File) {
     $mdcategory = ""
@@ -106,28 +113,30 @@ foreach ($file in Get-ChildItem -Path "$workingDirPath\Origin\UdonSharp\Tools\Do
 
     if ($fileName -eq "index") {
         Write-Host -NoNewline -ForegroundColor Green "COPY:    "
-        Write-Host "source = $($file.FullName),   destination = $workingDirPath\docs_all\worlds\udonsharp\index.md"
-
-        MakeDirectoryIfNotExists -dirpath "$workingDirPath\docs_all\worlds\udonsharp"
-        Copy-Item -Path $file.FullName -Destination "$workingDirPath\docs_all\worlds\udonsharp\index.md"
+        Write-Host "source = $($file.FullName),   destination = $legacyDocsDir\UdonSharp.md"
+        Copy-Item -Path $file.FullName -Destination "$legacyDocsDir\UdonSharp.md"
         continue
     }
+
+    # jsonファイルから$fileNameのカテゴリを取得(Getting-Started, Documentation, Extra)
     foreach ($category in $jsonContent.PSObject.Properties) {
         if ($category.Value -contains $fileName) {
             $mdcategory = $category.Name
             break
         }
     }
-    $destPath = "$workingDirPath\docs_all\worlds\udonsharp\$mdcategory\$fileName.md"
+    $destPath = "$legacyDocsDir\$mdcategory\$fileName.md"
 
     if (!($mdcategory -eq "")) {
         Write-Host -NoNewline -ForegroundColor Green "COPY:    "
         Write-Host "source = $($file.FullName),   destination = $destPath"
 
-        MakeDirectoryIfNotExists -dirpath "$workingDirPath\docs_all\worlds\udonsharp\$mdcategory"
+        MakeDirectoryIfNotExists -dirpath "$legacyDocsDir\$mdcategory"
         Copy-Item -Path $file.FullName -Destination $destPath
     }
 }
+
+
 
 # いらないものを削除
 Write-Host -NoNewline -ForegroundColor Green "DELETE:    "
@@ -135,7 +144,7 @@ Write-Host "$workingDirPath\docs_all\clientsim\logo.png"
 
 Remove-Item -Path "$workingDirPath\docs_all\clientsim\logo.png"
 
-# OriginフォルダがGitの追跡対象にならないように、.gitignoreを作成
+# Originフォルダ等がGitの追跡対象にならないように、.gitignoreを作成
 if (!(Test-Path "$workingDirPath\.gitignore")) {
     Write-Host -NoNewline -ForegroundColor Green "MKFILE:   "
     Write-Host "$workingDirPath\.gitignore"
