@@ -1,3 +1,13 @@
+# 公式リポジトリが統合されつつあるため、このリポジトリはアーカイブとし、単に公式リポジトリをフォークしたものを新たに用いることとします。
+# 移行先: https://github.com/Horo5502/creator-docs-ja
+
+# As the official repository is being merged, this repository will be archived and we will simply use a fork of the official repository.
+# New Repository: https://github.com/Horo5502/creator-docs-ja
+
+---
+---
+---
+
 (The English translation is below)
 
 > [!WARNING]  
